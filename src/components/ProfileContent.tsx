@@ -173,10 +173,12 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ className = "" }
 											setConfirmPassword("");
 											setIsChangingPassword(false);
 										} catch (err) {
-											const apiMessage =
-												(axios.isAxiosError(err) && (err.response?.data as any)?.message) ||
-												"Failed to change password.";
-											setPwdError(apiMessage);
+											if (axios.isAxiosError(err)) {
+												const data = err.response?.data as { message?: string } | undefined;
+												setPwdError(data?.message ?? "Failed to change password.");
+											} else {
+												setPwdError("Failed to change password.");
+											}
 										}
 									}}>
 									{pwdError && <div className="text-sm text-red-600">{pwdError}</div>}
