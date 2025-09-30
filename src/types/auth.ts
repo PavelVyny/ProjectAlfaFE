@@ -1,8 +1,7 @@
 export interface RegisterDto {
 	email: string;
 	password: string;
-	firstName?: string;
-	lastName?: string;
+	nickname?: string;
 }
 
 export interface LoginDto {
@@ -15,6 +14,7 @@ export interface AuthResponseDto {
 	user: {
 		id: string;
 		email: string;
+		nickname?: string;
 		firstName?: string;
 		lastName?: string;
 		firebaseUid?: string;
@@ -26,4 +26,13 @@ export interface AuthState {
 	user: AuthResponseDto["user"] | null;
 	token: string | null;
 	isAuthenticated: boolean;
+}
+
+export interface ChangePasswordDto {
+	currentPassword: string;
+	newPassword: string;
+}
+
+export interface ChangePasswordResponseDto {
+	message: string;
 }
