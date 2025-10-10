@@ -5,10 +5,12 @@ import {
 	AuthResponseDto,
 	ChangePasswordDto,
 	ChangePasswordResponseDto,
+	SendPasswordResetDto,
+	SendPasswordResetResponseDto,
 } from "../types/auth";
 
-// Create axios instance with base URL - using local API routes to avoid CORS
-const API_BASE_URL = typeof window !== "undefined" ? window.location.origin + "/api" : "/api";
+// Create axios instance with base URL - direct to backend
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 const authApi = axios.create({
 	baseURL: API_BASE_URL,
@@ -38,13 +40,19 @@ export const authService = {
 
 	// Google login
 	async googleLogin(idToken: string): Promise<AuthResponseDto> {
-		const response = await authApi.post("/google-auth", { credential: idToken });
+		const response = await authApi.post("/auth/google", { credential: idToken });
 		return response.data;
 	},
 
 	// Change password
 	async changePassword(data: ChangePasswordDto): Promise<ChangePasswordResponseDto> {
 		const response = await authApi.post("/auth/change-password", data);
+		return response.data;
+	},
+
+	// Send password reset email
+	async sendPasswordReset(data: SendPasswordResetDto): Promise<SendPasswordResetResponseDto> {
+		const response = await authApi.post("/auth/send-password-reset", data);
 		return response.data;
 	},
 

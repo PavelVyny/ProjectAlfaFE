@@ -1,19 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL =
-	process.env.NEXT_PUBLIC_API_URL ||
-	"https://project-alfa-backend-480977786594.us-central1.run.app";
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 export async function POST(request: NextRequest) {
 	try {
 		const body = await request.json();
-		const authHeader = request.headers.get("authorization") || "";
 
-		const response = await fetch(`${BACKEND_URL}/auth/change-password`, {
+		const response = await fetch(`${BACKEND_URL}/auth/send-password-reset`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
-				Authorization: authHeader,
 			},
 			body: JSON.stringify(body),
 		});
@@ -26,7 +22,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json(data);
 	} catch (error) {
-		console.error("Change password error:", error);
+		console.error("Send password reset error:", error);
 		return NextResponse.json({ message: "Internal server error" }, { status: 500 });
 	}
 }

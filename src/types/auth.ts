@@ -15,10 +15,9 @@ export interface AuthResponseDto {
 		id: string;
 		email: string;
 		nickname?: string;
-		firstName?: string;
-		lastName?: string;
 		firebaseUid?: string;
 		avatar?: string;
+		googleId?: string;
 	};
 }
 
@@ -34,5 +33,13 @@ export interface ChangePasswordDto {
 }
 
 export interface ChangePasswordResponseDto {
+	message: string;
+}
+
+export interface SendPasswordResetDto {
+	email: string;
+}
+
+export interface SendPasswordResetResponseDto {
 	message: string;
 }

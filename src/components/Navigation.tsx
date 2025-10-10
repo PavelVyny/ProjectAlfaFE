@@ -78,7 +78,7 @@ export const Navigation: React.FC = () => {
 							{isAuthenticated ? (
 								<div className="flex items-center space-x-4">
 									<span className="text-sm text-gray-700">
-										Hello, {user?.nickname || user?.firstName || user?.email}!
+										Hello, {user?.nickname || user?.email}!
 									</span>
 									<Link
 										href="/profile"
@@ -112,12 +112,12 @@ export const Navigation: React.FC = () => {
 								<div className="flex items-center space-x-3">
 									<button
 										onClick={() => setIsLoginModalOpen(true)}
-										className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+										className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none">
 										Login
 									</button>
 									<button
 										onClick={() => setIsRegisterModalOpen(true)}
-										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
 										Register
 									</button>
 								</div>

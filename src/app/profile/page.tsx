@@ -68,7 +68,7 @@ export default function ProfilePage() {
 							{isAuthenticated ? (
 								<>
 									<span className="text-sm text-gray-700">
-										Hello, {user?.nickname || user?.firstName || user?.email}
+										Hello, {user?.nickname || user?.email}
 									</span>
 									<button
 										onClick={() => logout()}

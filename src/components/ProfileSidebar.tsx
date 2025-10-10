@@ -43,7 +43,6 @@ export const ProfileSidebar: React.FC<ProfileSidebarProps> = ({
 
 	return (
 		<>
-			{/* Sidebar */}
 			<div
 				className={`
 					absolute md:sticky top-0 left-0 z-[999] w-full md:w-64 h-full bg-blue-200 shadow-lg overflow-hidden transform transition-transform duration-300 ease-in-out md:transform-none flex-none

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useLayoutEffect, useState } from "react";
-import { AuthState, ChangePasswordDto } from "../types/auth";
+import { AuthState, ChangePasswordDto, SendPasswordResetDto } from "../types/auth";
 import { authService } from "../services/authService";
 
 interface AuthContextType extends AuthState {
@@ -13,6 +13,7 @@ interface AuthContextType extends AuthState {
 	updateProfile: (partial: { email?: string; nickname?: string }) => Promise<void>;
 	deleteAccount: () => Promise<void>;
 	changePassword: (data: ChangePasswordDto) => Promise<void>;
+	sendPasswordReset: (data: SendPasswordResetDto) => Promise<string>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -27,7 +28,6 @@ export const useAuth = () => {
 
 const getInitialAuthState = (): { authState: AuthState; isLoading: boolean } => {
 	if (typeof window === "undefined") {
-		// На сервере всегда показываем загрузку
 		return {
 			authState: { user: null, token: null, isAuthenticated: false },
 			isLoading: true,
@@ -157,6 +157,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		}
 	};
 
+	const sendPasswordReset = async (data: SendPasswordResetDto): Promise<string> => {
+		try {
+			const response = await authService.sendPasswordReset(data);
+			return response.message;
+		} catch (error) {
+			console.error("Send password reset error:", error);
+			throw error;
+		}
+	};
+
 	const value: AuthContextType = {
 		...authState,
 		isLoading,
@@ -167,6 +177,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		updateProfile,
 		deleteAccount,
 		changePassword,
+		sendPasswordReset,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
