@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import axios from "axios";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
 
@@ -10,7 +9,7 @@ interface ProfileContentProps {
 }
 
 export const ProfileContent: React.FC<ProfileContentProps> = ({ className = "" }) => {
-	const { user, updateProfile, deleteAccount, changePassword, sendPasswordReset } = useAuth();
+	const { user, updateProfile, deleteAccount, sendPasswordReset } = useAuth();
 	const { showToast } = useToast();
 	const [editEmail, setEditEmail] = useState<string>(user?.email || "");
 	const [editNickname, setEditNickname] = useState<string>(user?.nickname || "");
@@ -125,7 +124,7 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ className = "" }
 										</p>
 									) : (
 										<p className="text-sm text-gray-500">
-											We'll send you an email with instructions to reset your password.
+											We&apos;ll send you an email with instructions to reset your password.
 										</p>
 									)}
 								</div>
