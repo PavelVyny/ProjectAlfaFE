@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
 	try {
 		const body = await request.json();
 
-		const response = await fetch(`${BACKEND_URL}/auth/register`, {
+		const response = await fetch(`${BACKEND_URL}/auth/send-password-reset`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
 
 		return NextResponse.json(data);
 	} catch (error) {
-		console.error("Register error:", error);
+		console.error("Send password reset error:", error);
 		return NextResponse.json({ message: "Internal server error" }, { status: 500 });
 	}
 }

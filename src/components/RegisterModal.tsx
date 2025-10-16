@@ -16,8 +16,7 @@ interface RegisterFormData {
 	email: string;
 	password: string;
 	confirmPassword: string;
-	firstName: string;
-	lastName: string;
+	nickname?: string;
 }
 
 export const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose }) => {
@@ -35,7 +34,6 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose })
 
 	const password = watch("password");
 
-	// Не показываем модалку пока идет загрузка аутентификации
 	if (authLoading) {
 		return null;
 	}
@@ -50,8 +48,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose })
 		setError(null);
 
 		try {
-			// Send empty strings for firstName and lastName if not provided
-			await authRegister(data.email, data.password, data.firstName || "", data.lastName || "");
+			await authRegister(data.email, data.password, data.nickname || "");
 			reset();
 			onClose();
 		} catch (error) {
@@ -122,34 +119,18 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose })
 						</div>
 
 						<div>
-							<label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
-								First Name (Optional)
+							<label htmlFor="nickname" className="block text-sm font-medium text-gray-700 mb-2">
+								Nickname (Optional)
 							</label>
 							<input
-								{...register("firstName")}
+								{...register("nickname")}
 								type="text"
-								id="firstName"
+								id="nickname"
 								className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-4 py-3"
-								placeholder="Enter first name (optional)"
+								placeholder="Enter nickname (optional)"
 							/>
-							{errors.firstName && (
-								<p className="mt-2 text-sm text-red-600">{errors.firstName.message}</p>
-							)}
-						</div>
-
-						<div>
-							<label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
-								Last Name (Optional)
-							</label>
-							<input
-								{...register("lastName")}
-								type="text"
-								id="lastName"
-								className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-4 py-3"
-								placeholder="Enter last name (optional)"
-							/>
-							{errors.lastName && (
-								<p className="mt-2 text-sm text-red-600">{errors.lastName.message}</p>
+							{errors.nickname && (
+								<p className="mt-2 text-sm text-red-600">{errors.nickname.message}</p>
 							)}
 						</div>
 
@@ -205,7 +186,7 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose })
 						<button
 							type="submit"
 							disabled={isLoading}
-							className="w-full rounded-md bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50">
+							className="w-full rounded-md bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus:outline-none disabled:opacity-50">
 							{isLoading ? "Registering..." : "Register"}
 						</button>
 
