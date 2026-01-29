@@ -112,6 +112,7 @@ class TokenRefreshService {
       console.warn(
         '🔄 [TOKEN REFRESH] Refresh already in progress, skipping...',
       );
+
       return null;
     }
 
