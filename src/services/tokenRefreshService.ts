@@ -36,10 +36,7 @@ class TokenRefreshService {
   private failedQueue: QueuedRequest[] = [];
 
   // Base URL for API
-  private readonly API_BASE_URL =
-    typeof window !== 'undefined'
-      ? process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
-      : '';
+  private readonly API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
   private constructor() {
     // Private constructor for singleton pattern

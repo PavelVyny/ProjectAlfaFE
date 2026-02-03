@@ -18,7 +18,7 @@ import {
 } from '../utils/authLogger';
 
 // Create axios instance with base URL - direct to backend
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const authApi = axios.create({
   baseURL: API_BASE_URL,
