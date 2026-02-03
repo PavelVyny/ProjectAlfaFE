@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import {
   logTokenRefresh,
   logRequestQueued,
@@ -20,8 +20,8 @@ import {
  */
 
 interface QueuedRequest {
-  resolve: (value: any) => void;
-  reject: (reason: any) => void;
+  resolve: (value: AxiosRequestConfig) => void;
+  reject: (reason: unknown) => void;
   config: AxiosRequestConfig;
 }
 
@@ -153,18 +153,19 @@ class TokenRefreshService {
       logTokenRefresh(true);
 
       return access_token;
-    } catch (error: any) {
+    } catch (error: unknown) {
       const duration = Date.now() - startTime;
+      const axiosError = error as AxiosError;
 
       console.error('❌ [TOKEN REFRESH] Token refresh failed', {
-        error: error?.message || 'Unknown error',
-        status: error?.response?.status,
+        error: axiosError?.message || 'Unknown error',
+        status: axiosError?.response?.status,
         duration: `${duration}ms`,
       });
 
       // Process queue with error
-      this.processQueue(error, null);
-      logTokenRefresh(false, error?.message || 'Refresh failed');
+      this.processQueue(error as Error, null);
+      logTokenRefresh(false, axiosError?.message || 'Refresh failed');
 
       // Clear tokens on refresh failure
       if (typeof window !== 'undefined') {
