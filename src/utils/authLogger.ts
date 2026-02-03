@@ -17,7 +17,7 @@ export enum AuthEventType {
 }
 
 interface LogData {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**
@@ -132,9 +132,10 @@ export function logApiError(
   method: string,
   url: string,
   status: number | string,
-  error: any,
+  error: unknown,
   duration?: number,
 ): void {
+  const errorMessage = (error as Error)?.message || String(error);
   logAuthEvent(
     AuthEventType.API_ERROR,
     `${method.toUpperCase()} ${url} - Error ${status}`,
@@ -142,9 +143,9 @@ export function logApiError(
       method,
       url,
       status,
-      error: error?.message || error,
+      error: errorMessage,
       duration: duration ? `${duration}ms` : 'N/A',
-      stack: error?.stack,
+      stack: (error as Error)?.stack,
     },
   );
 }
