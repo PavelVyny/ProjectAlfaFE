@@ -11,9 +11,10 @@ interface ProfileContentProps {
 export const ProfileContent: React.FC<ProfileContentProps> = ({ className = "" }) => {
 	const { user, updateProfile, deleteAccount, sendPasswordReset } = useAuth();
 	const { showToast } = useToast();
-	const [editEmail, setEditEmail] = useState<string>(user?.email || "");
 	const [editNickname, setEditNickname] = useState<string>(user?.nickname || "");
 	const [isEditing, setIsEditing] = useState<boolean>(false);
+	const [error, setError] = useState<string | null>(null);
+	const [isSaving, setIsSaving] = useState<boolean>(false);
 
 	return (
 		<div className={`flex-1 lg:ml-0 overflow-auto ${className}`}>
@@ -49,24 +50,24 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ className = "" }
 							<div></div>
 							<div className="md:col-span-2">
 								<label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-								{isEditing ? (
-									<input
-										type="email"
-										value={editEmail}
-										onChange={(e) => setEditEmail(e.target.value)}
-										className="w-full text-sm text-gray-900 bg-white px-3 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
-									/>
-								) : (
-									<div className="text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md">
-										{user?.email || "Not specified"}
-									</div>
-								)}
+								<div className="text-sm text-gray-900 bg-gray-50 px-3 py-2 rounded-md border border-gray-200">
+									{user?.email || "Not specified"}
+								</div>
 							</div>
 						</div>
+						{error && (
+							<div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-md">
+								<p className="text-sm text-red-600">{error}</p>
+							</div>
+						)}
+
 						<div className="mt-6 flex items-center gap-3">
 							{!isEditing ? (
 								<button
-									onClick={() => setIsEditing(true)}
+									onClick={() => {
+										setIsEditing(true);
+										setError(null);
+									}}
 									className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none">
 									<svg
 										className="w-4 h-4 mr-2"
@@ -86,19 +87,45 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ className = "" }
 								<>
 									<button
 										onClick={async () => {
-											await updateProfile({ email: editEmail, nickname: editNickname });
-											setIsEditing(false);
+											setError(null);
+											setIsSaving(true);
+											try {
+												await updateProfile({ nickname: editNickname });
+												setIsEditing(false);
+												showToast("Profile updated successfully", "success");
+											} catch (err: unknown) {
+												console.error("Update profile error:", err);
+												const apiError = err as {
+													response?: {
+														data?: {
+															details?: string;
+															error?: { details?: string };
+															message?: string;
+														};
+													};
+												};
+												const errorMessage =
+													apiError.response?.data?.details ||
+													apiError.response?.data?.error?.details ||
+													apiError.response?.data?.message ||
+													"Failed to update profile";
+												setError(errorMessage);
+											} finally {
+												setIsSaving(false);
+											}
 										}}
-										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none">
-										Save changes
+										disabled={isSaving}
+										className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed">
+										{isSaving ? "Saving..." : "Save changes"}
 									</button>
 									<button
 										onClick={() => {
-											setEditEmail(user?.email || "");
 											setEditNickname(user?.nickname || "");
 											setIsEditing(false);
+											setError(null);
 										}}
-										className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none">
+										disabled={isSaving}
+										className="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed">
 										Cancel
 									</button>
 								</>
