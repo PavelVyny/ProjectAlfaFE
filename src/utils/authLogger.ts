@@ -135,9 +135,7 @@ export function logApiError(
   error: unknown,
   duration?: number,
 ): void {
-  const normalizedError =
-    error instanceof Error ? error : new Error(String(error ?? 'Unknown error'));
-
+  const errorMessage = (error as Error)?.message || String(error);
   logAuthEvent(
     AuthEventType.API_ERROR,
     `${method.toUpperCase()} ${url} - Error ${status}`,
@@ -145,9 +143,9 @@ export function logApiError(
       method,
       url,
       status,
-      error: normalizedError.message,
+      error: errorMessage,
       duration: duration ? `${duration}ms` : 'N/A',
-      stack: normalizedError.stack,
+      stack: (error as Error)?.stack,
     },
   );
 }

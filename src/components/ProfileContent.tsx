@@ -95,8 +95,7 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ className = "" }
 												showToast("Profile updated successfully", "success");
 											} catch (err: unknown) {
 												console.error("Update profile error:", err);
-
-												type UpdateProfileError = {
+												const apiError = err as {
 													response?: {
 														data?: {
 															details?: string;
@@ -105,13 +104,10 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ className = "" }
 														};
 													};
 												};
-
-												const typedError = err as UpdateProfileError;
-
 												const errorMessage =
-													typedError.response?.data?.details ||
-													typedError.response?.data?.error?.details ||
-													typedError.response?.data?.message ||
+													apiError.response?.data?.details ||
+													apiError.response?.data?.error?.details ||
+													apiError.response?.data?.message ||
 													"Failed to update profile";
 												setError(errorMessage);
 											} finally {

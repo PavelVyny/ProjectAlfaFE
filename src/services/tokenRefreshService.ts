@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, AxiosError } from 'axios';
 import {
   logTokenRefresh,
   logRequestQueued,
@@ -21,7 +21,7 @@ import {
 
 interface QueuedRequest {
   resolve: (value: AxiosRequestConfig) => void;
-  reject: (reason: Error) => void;
+  reject: (reason: unknown) => void;
   config: AxiosRequestConfig;
 }
 
@@ -36,10 +36,7 @@ class TokenRefreshService {
   private failedQueue: QueuedRequest[] = [];
 
   // Base URL for API
-  private readonly API_BASE_URL =
-    typeof window !== 'undefined'
-      ? process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001'
-      : '';
+  private readonly API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
 
   private constructor() {
     // Private constructor for singleton pattern
@@ -154,21 +151,18 @@ class TokenRefreshService {
 
       return access_token;
     } catch (error: unknown) {
-      const err = error as {
-        message?: string;
-        response?: { status?: number };
-      };
       const duration = Date.now() - startTime;
+      const axiosError = error as AxiosError;
 
       console.error('❌ [TOKEN REFRESH] Token refresh failed', {
-        error: err?.message || 'Unknown error',
-        status: err?.response?.status,
+        error: axiosError?.message || 'Unknown error',
+        status: axiosError?.response?.status,
         duration: `${duration}ms`,
       });
 
       // Process queue with error
-      this.processQueue(err instanceof Error ? err : new Error(err?.message || 'Refresh failed'), null);
-      logTokenRefresh(false, err?.message || 'Refresh failed');
+      this.processQueue(error as Error, null);
+      logTokenRefresh(false, axiosError?.message || 'Refresh failed');
 
       // Clear tokens on refresh failure
       if (typeof window !== 'undefined') {
