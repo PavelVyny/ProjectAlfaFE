@@ -20,8 +20,8 @@ import {
  */
 
 interface QueuedRequest {
-  resolve: (value: any) => void;
-  reject: (reason: any) => void;
+  resolve: (value: AxiosRequestConfig) => void;
+  reject: (reason: Error) => void;
   config: AxiosRequestConfig;
 }
 
@@ -153,18 +153,22 @@ class TokenRefreshService {
       logTokenRefresh(true);
 
       return access_token;
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as {
+        message?: string;
+        response?: { status?: number };
+      };
       const duration = Date.now() - startTime;
 
       console.error('❌ [TOKEN REFRESH] Token refresh failed', {
-        error: error?.message || 'Unknown error',
-        status: error?.response?.status,
+        error: err?.message || 'Unknown error',
+        status: err?.response?.status,
         duration: `${duration}ms`,
       });
 
       // Process queue with error
-      this.processQueue(error, null);
-      logTokenRefresh(false, error?.message || 'Refresh failed');
+      this.processQueue(err instanceof Error ? err : new Error(err?.message || 'Refresh failed'), null);
+      logTokenRefresh(false, err?.message || 'Refresh failed');
 
       // Clear tokens on refresh failure
       if (typeof window !== 'undefined') {

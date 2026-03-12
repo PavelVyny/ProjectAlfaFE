@@ -93,12 +93,25 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ className = "" }
 												await updateProfile({ nickname: editNickname });
 												setIsEditing(false);
 												showToast("Profile updated successfully", "success");
-											} catch (err: any) {
+											} catch (err: unknown) {
 												console.error("Update profile error:", err);
+
+												type UpdateProfileError = {
+													response?: {
+														data?: {
+															details?: string;
+															error?: { details?: string };
+															message?: string;
+														};
+													};
+												};
+
+												const typedError = err as UpdateProfileError;
+
 												const errorMessage =
-													err.response?.data?.details ||
-													err.response?.data?.error?.details ||
-													err.response?.data?.message ||
+													typedError.response?.data?.details ||
+													typedError.response?.data?.error?.details ||
+													typedError.response?.data?.message ||
 													"Failed to update profile";
 												setError(errorMessage);
 											} finally {
