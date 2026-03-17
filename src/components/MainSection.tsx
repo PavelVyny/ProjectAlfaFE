@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { EventCard } from "./EventCard";
 import { CATEGORIES, type Event, type EventCategory } from "@/types/event";
+import { SearchInput } from "./common/SearchInput";
 
 interface MainSectionProps {
   events: Event[];
@@ -26,6 +27,7 @@ export function MainSection({ events }: MainSectionProps) {
           e.description.toLowerCase().includes(q)
       );
     }
+    
     return list;
   }, [events, category, search]);
 
@@ -34,30 +36,11 @@ export function MainSection({ events }: MainSectionProps) {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
         {/* Поиск по названию */}
         <div className="mb-6">
-          <label htmlFor="search" className="sr-only">
-            Search events
-          </label>
-          <div className="relative">
-            <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-orange-500 pointer-events-none" />
-            <input
-              id="search"
-              type="search"
-              placeholder="Search events..."
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-11 pr-11 py-3 rounded-xl bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-            />
-            {search.length > 0 && (
-              <button
-                type="button"
-                onClick={() => setSearch("")}
-                aria-label="Clear search"
-                className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-md text-orange-500 hover:bg-zinc-700 hover:text-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-zinc-800"
-              >
-                <XMarkIcon className="w-5 h-5" />
-              </button>
-            )}
-          </div>
+          <SearchInput
+            value={search}
+            onChange={setSearch}
+            placeholder="Search events..."
+          />
         </div>
 
         {/* Фильтр по типу ивента */}
