@@ -35,8 +35,7 @@ class TokenRefreshService {
   // Queue of requests waiting for token refresh to complete
   private failedQueue: QueuedRequest[] = [];
 
-  // Base URL for API
-  private readonly API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+  private readonly API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
   private constructor() {
     // Private constructor for singleton pattern
