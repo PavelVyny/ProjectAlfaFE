@@ -17,8 +17,7 @@ import {
   logApiError,
 } from '../utils/authLogger';
 
-// Create axios instance with base URL - direct to backend
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
 const authApi = axios.create({
   baseURL: API_BASE_URL,

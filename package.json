@@ -7,9 +7,9 @@
 	"license": "UNLICENSED",
 	"scripts": {
 		"build": "next build",
-		"dev": "next dev --turbopack",
+		"dev": "next dev --turbopack -p 3001",
 		"start": "next start",
-		"lint": "next lint",
+		"lint": "eslint src",
 		"type-check": "tsc --noEmit",
 		"test": "npm run lint && npm run type-check && npm run build"
 	},
