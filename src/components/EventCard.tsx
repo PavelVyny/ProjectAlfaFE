@@ -2,6 +2,7 @@ import type { Event } from "@/types/event";
 import Image from "next/image";
 import { CalendarDaysIcon, MapPinIcon } from "@heroicons/react/24/outline";
 import { CategoryBadge } from "./common/CategoryBadge";
+import Link from "next/link";
 
 
 interface EventCardProps {
@@ -22,6 +23,7 @@ export function EventCard({ event }: EventCardProps) {
 
 
   return (
+    <Link href={`/event/${event.id}`} className="block">
     <article className="group rounded-xl overflow-hidden bg-zinc-800/80 shadow-xl flex flex-col h-full transition-transform duration-300 ease-out hover:scale-[1.03]">
       <div className="relative aspect-[6/4] bg-zinc-700 overflow-hidden">
         <Image
@@ -57,5 +59,6 @@ export function EventCard({ event }: EventCardProps) {
         </div>
       </div>
     </article>
+    </Link>
   );
 }

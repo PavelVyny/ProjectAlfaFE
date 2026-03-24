@@ -14,7 +14,11 @@ export interface Event {
   category: EventCategory;
   price: number;
   date: string;
+  /** Время начала, например "18:00" */
+  time: string;
   location: string;
+  /** Оставшиеся места для отображения на странице ивента */
+  seatsLeft: number;
   imageUrl: string;
 }
 

@@ -6,7 +6,9 @@
     "category": "Music",
     "price": 45,
     "date": "2026-03-15",
+    "time": "18:00",
     "location": "Central Arena, Downtown",
+    "seatsLeft": 200,
     "imageUrl": "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=600&h=400&fit=crop"
   },
   {
@@ -16,7 +18,9 @@
     "category": "Tech",
     "price": 120,
     "date": "2026-04-02",
+    "time": "09:00",
     "location": "Innovation Hub, Tech District",
+    "seatsLeft": 85,
     "imageUrl": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&h=400&fit=crop"
   },
   {
@@ -26,7 +30,9 @@
     "category": "Art",
     "price": 25,
     "date": "2026-03-22",
+    "time": "10:00",
     "location": "Gallery Row, Arts Quarter",
+    "seatsLeft": 150,
     "imageUrl": "https://images.unsplash.com/photo-1536924940846-227afb31e2a5?w=600&h=400&fit=crop"
   },
   {
@@ -36,7 +42,9 @@
     "category": "Food",
     "price": 15,
     "date": "2026-04-10",
+    "time": "12:00",
     "location": "Riverside Park",
+    "seatsLeft": 500,
     "imageUrl": "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&h=400&fit=crop"
   },
   {
@@ -46,7 +54,9 @@
     "category": "Wellness",
     "price": 60,
     "date": "2026-03-29",
+    "time": "06:30",
     "location": "Lakeview Retreat Center",
+    "seatsLeft": 40,
     "imageUrl": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&h=400&fit=crop"
   },
   {
@@ -56,7 +66,9 @@
     "category": "Entertainment",
     "price": 30,
     "date": "2026-04-05",
+    "time": "21:00",
     "location": "The Basement Club, Old Town",
+    "seatsLeft": 60,
     "imageUrl": "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=600&h=400&fit=crop"
   },
   {
@@ -66,7 +78,9 @@
     "category": "Music",
     "price": 55,
     "date": "2026-04-18",
+    "time": "19:30",
     "location": "City Roof Garden",
+    "seatsLeft": 120,
     "imageUrl": "https://images.unsplash.com/photo-1415201364774-f6f0bb35f28f?w=600&h=400&fit=crop"
   },
   {
@@ -76,7 +90,9 @@
     "category": "Tech",
     "price": 35,
     "date": "2026-03-28",
+    "time": "18:00",
     "location": "Co-Work Space, Innovation Center",
+    "seatsLeft": 90,
     "imageUrl": "https://images.unsplash.com/photo-1552664730-d307ca884978?w=600&h=400&fit=crop"
   },
   {
@@ -86,7 +102,9 @@
     "category": "Entertainment",
     "price": 20,
     "date": "2026-04-12",
+    "time": "16:00",
     "location": "Harbor Yard",
+    "seatsLeft": 180,
     "imageUrl": "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=600&h=400&fit=crop"
   }
 ]
