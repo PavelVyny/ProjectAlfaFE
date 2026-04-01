@@ -14,12 +14,17 @@ export interface Event {
   category: EventCategory;
   price: number;
   date: string;
-  /** Время начала, например "18:00" */
-  time: string;
+  /** Start time, e.g. "18:00" */
+  start_time: string;
   location: string;
-  /** Оставшиеся места для отображения на странице ивента */
-  seatsLeft: number;
-  imageUrl: string;
+  /** Remaining seats available */
+  remaining_capacity: number;
+  image_url: string;
+  duration_minutes?: number;
+  capacity?: number;
+  status?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 

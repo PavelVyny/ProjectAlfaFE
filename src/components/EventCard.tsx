@@ -27,7 +27,7 @@ export function EventCard({ event }: EventCardProps) {
     <article className="group rounded-xl overflow-hidden bg-zinc-800/80 shadow-xl flex flex-col h-full transition-transform duration-300 ease-out hover:scale-[1.03]">
       <div className="relative aspect-[6/4] bg-zinc-700 overflow-hidden">
         <Image
-          src={event.imageUrl}
+          src={event.image_url}
           alt={event.title}
           fill
           className="object-cover transition-transform duration-500 ease-out group-hover:scale-110"
