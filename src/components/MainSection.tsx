@@ -1,18 +1,16 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { MagnifyingGlassIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { EventCard } from "./EventCard";
-import { CATEGORIES, type Event, type EventCategory } from "@/types/event";
+import { CATEGORIES, type EventCategory } from "@/types/event";
 import { SearchInput } from "./common/SearchInput";
+import { useEvents } from "@/hooks/useEvents";
 
-interface MainSectionProps {
-  events: Event[];
-}
-
-export function MainSection({ events }: MainSectionProps) {
+export function MainSection() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<EventCategory | "All">("All");
+
+  const { events = [], isLoading, isError } = useEvents();
 
   const filtered = useMemo(() => {
     let list = events;
@@ -27,14 +25,30 @@ export function MainSection({ events }: MainSectionProps) {
           e.description.toLowerCase().includes(q)
       );
     }
-    
+
     return list;
   }, [events, category, search]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-zinc-900 text-white flex items-center justify-center">
+        <p className="text-zinc-400 text-sm">Loading events...</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="min-h-screen bg-zinc-900 text-white flex items-center justify-center">
+        <p className="text-zinc-500 text-sm">Failed to load events. Please refresh.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-zinc-900 text-white">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
-        {/* Поиск по названию */}
+        {/* Search by title */}
         <div className="mb-6">
           <SearchInput
             value={search}
@@ -43,7 +57,7 @@ export function MainSection({ events }: MainSectionProps) {
           />
         </div>
 
-        {/* Фильтр по типу ивента */}
+        {/* Filter by event type */}
         <div className="flex flex-wrap gap-2 mb-8">
           {CATEGORIES.map((cat) => (
             <button
@@ -61,7 +75,7 @@ export function MainSection({ events }: MainSectionProps) {
           ))}
         </div>
 
-        {/* Сетка карточек */}
+        {/* Event cards grid */}
         <section aria-label="Event list">
           {filtered.length > 0 ? (
             <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 list-none p-0 m-0">
