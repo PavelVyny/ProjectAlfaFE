@@ -119,7 +119,7 @@ export default async function EventPage({ params }: Props) {
             </div>
 
             <div className="mt-5 w-full sm:mt-9">
-              <EventBookingCard pricePerSeat={event.price} compact className="!mt-0" />
+              <EventBookingCard pricePerSeat={event.price} eventId={event.id} title={event.title} compact className="!mt-0" />
             </div>
           </div>
         </div>
