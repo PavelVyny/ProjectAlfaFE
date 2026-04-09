@@ -30,7 +30,14 @@ const inputClass =
 const labelClass = 'block text-sm font-medium text-zinc-300 mb-1.5';
 const errorClass = 'mt-1 text-xs text-red-400';
 
-const EVENT_CATEGORIES = ['Music', 'Tech', 'Art', 'Food', 'Wellness', 'Entertainment'];
+const EVENT_CATEGORIES = [
+  { value: 'MUSIC', label: 'Music' },
+  { value: 'TECH', label: 'Tech' },
+  { value: 'ART', label: 'Art' },
+  { value: 'FOOD', label: 'Food' },
+  { value: 'WELLNESS', label: 'Wellness' },
+  { value: 'ENTERTAINMENT', label: 'Entertainment' },
+];
 const EVENT_STATUSES: AdminEventStatus[] = ['DRAFT', 'PUBLISHED', 'CANCELLED'];
 
 export function EventForm({ mode, defaultValues, onSubmit, isSubmitting }: EventFormProps) {
@@ -90,8 +97,8 @@ export function EventForm({ mode, defaultValues, onSubmit, isSubmitting }: Event
           >
             <option value="">Select a category</option>
             {EVENT_CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
+              <option key={cat.value} value={cat.value}>
+                {cat.label}
               </option>
             ))}
           </select>

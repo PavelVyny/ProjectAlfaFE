@@ -1,3 +1,22 @@
+// =============================================================================
+// EventDetail — КЛИЕНТСКИЙ компонент детальной страницы ивента
+// =============================================================================
+// Это КЛИЕНТСКАЯ часть паттерна "Server Fetch + Client Hydration".
+//
+// Почему "use client"?
+// Потому что useEvent(id) — это React хук (useQuery внутри), а хуки работают
+// только в клиентских компонентах.
+//
+// Но данные уже ЕСТЬ! (благодаря серверному prefetch в page.tsx)
+// Когда этот компонент монтируется, useEvent(id) находит данные в кеше →
+// isLoading = false сразу → юзер видит контент без мигания "Loading..."
+//
+// ПРЕИМУЩЕСТВА этого паттерна:
+//   1. SEO: HTML приходит с контентом (поисковик видит заголовок, описание)
+//   2. Скорость: нет спиннера при первой загрузке
+//   3. Реактивность: если юзер забронирует место, можно вызвать refetch →
+//      remaining_capacity обновится БЕЗ перезагрузки страницы
+// =============================================================================
 "use client";
 
 import { useEvent } from '@/hooks/useEvent';
@@ -19,7 +38,7 @@ interface Props {
 }
 
 function formatDateShort(isoDate: string): string {
-  const d = new Date(isoDate + "T12:00:00");
+  const d = new Date(isoDate);
   return d.toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -28,8 +47,26 @@ function formatDateShort(isoDate: string): string {
 }
 
 export function EventDetail({ id }: Props) {
+  // ===========================================================================
+  // useEvent(id) — вызывает useQuery с ключом ['events', id]
+  // ===========================================================================
+  // Три возможных сценария при вызове:
+  //
+  // 1. СЕРВЕРНЫЙ РЕНДЕР (первый визит по ссылке):
+  //    HydrationBoundary уже загрузил данные в кеш → data = Event, isLoading = false
+  //    Юзер видит контент мгновенно, спиннер НЕ показывается
+  //
+  // 2. КЛИЕНТСКАЯ НАВИГАЦИЯ (переход по Link внутри приложения):
+  //    Серверного prefetch не было → кеш пуст → isLoading = true
+  //    TQ делает GET /events/:id → данные приходят → isLoading = false
+  //
+  // 3. ПОВТОРНЫЙ ВИЗИТ (данные уже в кеше от прошлого раза):
+  //    Если < 60 сек → мгновенно из кеша, запроса нет
+  //    Если > 60 сек → показывает кеш + фоновый refetch
   const { data: event, isLoading, isError } = useEvent(id);
 
+  // Состояние загрузки — показывается ТОЛЬКО если данных нет в кеше.
+  // При серверном рендере с HydrationBoundary это НИКОГДА не показывается.
   if (isLoading) {
     return (
       <div className="flex h-[100dvh] items-center justify-center bg-zinc-900 text-zinc-400">
@@ -101,6 +138,10 @@ export function EventDetail({ id }: Props) {
                 </span>
                 <span className="inline-flex shrink-0 items-center gap-1 sm:gap-1.5">
                   <UsersIcon className="h-3.5 w-3.5 shrink-0 text-orange-500 sm:h-4 sm:w-4" aria-hidden />
+                  {/* remaining_capacity — вычисляется на бэкенде:
+                      event.capacity - SUM(bookings.participant_count)
+                      Обновляется автоматически после бронирования благодаря
+                      invalidateQueries в useBookEvent.onSuccess */}
                   <span>{event.remaining_capacity} seats left</span>
                 </span>
               </div>
@@ -111,6 +152,9 @@ export function EventDetail({ id }: Props) {
             </div>
 
             <div className="mt-5 w-full sm:mt-9">
+              {/* EventBookingCard — UI компонент бронирования.
+                  Сейчас это заглушка (qty + Book Now кнопка без действия).
+                  Junior подключит useBookEvent() хук к этой форме. */}
               <EventBookingCard pricePerSeat={event.price} compact className="!mt-0" />
             </div>
           </div>

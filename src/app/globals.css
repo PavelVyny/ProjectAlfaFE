@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Headless UI Dialog adds padding-right to compensate for scrollbar removal,
+   but scrollbar-gutter: stable already handles this. Prevent double compensation. */
+html[style*="overflow"] {
+  padding-right: 0 !important;
+}
+
 :root {
 	--background: #ffffff;
 	--foreground: #171717;

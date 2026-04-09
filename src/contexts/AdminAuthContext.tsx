@@ -39,7 +39,7 @@ const getInitialAdminAuthState = (): InitialAdminAuthState => {
   try {
     const token = localStorage.getItem(ADMIN_TOKEN_KEY);
     const userRaw = localStorage.getItem(ADMIN_USER_KEY);
-    const admin: AdminUser | null = userRaw ? (JSON.parse(userRaw) as AdminUser) : null;
+    const admin: AdminUser | null = userRaw && userRaw !== 'undefined' ? (JSON.parse(userRaw) as AdminUser) : null;
 
     if (token && admin) {
       return {
@@ -72,12 +72,15 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   const login = async (email: string, password: string): Promise<void> => {
     try {
-      const response = await adminApiClient.post<AdminLoginResponse>('/admin/auth/login', {
+      const response = await adminApiClient.post('/admin/auth/login', {
         email,
         password,
       });
 
-      const { access_token, admin } = response.data;
+      // Backend ResponseInterceptor wraps in { data: { access_token, admin }, success }
+      const raw = response.data as Record<string, unknown>;
+      const payload = (raw.data ?? raw) as AdminLoginResponse;
+      const { access_token, admin } = payload;
 
       localStorage.setItem(ADMIN_TOKEN_KEY, access_token);
       localStorage.setItem(ADMIN_USER_KEY, JSON.stringify(admin));

@@ -84,22 +84,22 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose })
 
 	return (
 		<Dialog open={isOpen} onClose={handleClose} className="relative z-50">
-			<div className="fixed inset-0 bg-black/30 modal-backdrop" aria-hidden="true" />
+			<div className="fixed inset-0 bg-black/80 backdrop-blur-md" aria-hidden="true" />
 
-			<div className="fixed inset-0 flex items-center justify-center p-4">
-				<Dialog.Panel className="mx-auto max-w-sm rounded-lg bg-white p-8 shadow-xl modal-panel">
+			<div className="fixed inset-0 overflow-y-auto flex items-center justify-center p-4">
+				<Dialog.Panel className="mx-auto max-w-sm w-full rounded-2xl bg-zinc-900 border border-zinc-700 p-8 shadow-2xl ring-1 ring-white/5">
 					<div className="flex items-center justify-between mb-6">
-						<Dialog.Title className="text-lg font-semibold text-gray-900">
+						<Dialog.Title className="text-lg font-semibold text-white">
 							Registration
 						</Dialog.Title>
-						<button onClick={handleClose} className="text-gray-400 hover:text-gray-600">
+						<button onClick={handleClose} className="text-zinc-400 hover:text-white transition">
 							<XMarkIcon className="h-6 w-6" />
 						</button>
 					</div>
 
-					<form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+					<form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
 						<div>
-							<label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+							<label htmlFor="email" className="block text-sm font-medium text-zinc-300 mb-2">
 								Email
 							</label>
 							<input
@@ -112,30 +112,30 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose })
 								})}
 								type="email"
 								id="email"
-								className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-4 py-3"
+								className="block w-full rounded-lg border border-zinc-700 bg-zinc-800 text-white placeholder-zinc-500 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 sm:text-sm px-4 py-3"
 								placeholder="Enter email"
 							/>
-							{errors.email && <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>}
+							{errors.email && <p className="mt-2 text-sm text-red-400">{errors.email.message}</p>}
 						</div>
 
 						<div>
-							<label htmlFor="nickname" className="block text-sm font-medium text-gray-700 mb-2">
+							<label htmlFor="nickname" className="block text-sm font-medium text-zinc-300 mb-2">
 								Nickname (Optional)
 							</label>
 							<input
 								{...register("nickname")}
 								type="text"
 								id="nickname"
-								className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-4 py-3"
+								className="block w-full rounded-lg border border-zinc-700 bg-zinc-800 text-white placeholder-zinc-500 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 sm:text-sm px-4 py-3"
 								placeholder="Enter nickname (optional)"
 							/>
 							{errors.nickname && (
-								<p className="mt-2 text-sm text-red-600">{errors.nickname.message}</p>
+								<p className="mt-2 text-sm text-red-400">{errors.nickname.message}</p>
 							)}
 						</div>
 
 						<div>
-							<label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+							<label htmlFor="password" className="block text-sm font-medium text-zinc-300 mb-2">
 								Password
 							</label>
 							<input
@@ -148,18 +148,18 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose })
 								})}
 								type="password"
 								id="password"
-								className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-4 py-3"
+								className="block w-full rounded-lg border border-zinc-700 bg-zinc-800 text-white placeholder-zinc-500 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 sm:text-sm px-4 py-3"
 								placeholder="Enter password"
 							/>
 							{errors.password && (
-								<p className="mt-2 text-sm text-red-600">{errors.password.message}</p>
+								<p className="mt-2 text-sm text-red-400">{errors.password.message}</p>
 							)}
 						</div>
 
 						<div>
 							<label
 								htmlFor="confirmPassword"
-								className="block text-sm font-medium text-gray-700 mb-2">
+								className="block text-sm font-medium text-zinc-300 mb-2">
 								Confirm Password
 							</label>
 							<input
@@ -169,33 +169,33 @@ export const RegisterModal: React.FC<RegisterModalProps> = ({ isOpen, onClose })
 								})}
 								type="password"
 								id="confirmPassword"
-								className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm px-4 py-3"
+								className="block w-full rounded-lg border border-zinc-700 bg-zinc-800 text-white placeholder-zinc-500 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 sm:text-sm px-4 py-3"
 								placeholder="Confirm password"
 							/>
 							{errors.confirmPassword && (
-								<p className="mt-2 text-sm text-red-600">{errors.confirmPassword.message}</p>
+								<p className="mt-2 text-sm text-red-400">{errors.confirmPassword.message}</p>
 							)}
 						</div>
 
 						{error && (
-							<div className="rounded-md bg-red-50 p-4">
-								<p className="text-sm text-red-600">{error}</p>
+							<div className="rounded-lg bg-red-500/10 border border-red-500/20 p-4">
+								<p className="text-sm text-red-400">{error}</p>
 							</div>
 						)}
 
 						<button
 							type="submit"
 							disabled={isLoading}
-							className="w-full rounded-md bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus:outline-none disabled:opacity-50">
+							className="w-full rounded-full bg-gradient-to-r from-orange-500 via-orange-400 to-amber-300 px-4 py-3 text-sm font-bold text-white shadow-lg shadow-orange-500/25 transition hover:brightness-105 active:scale-[0.99] disabled:opacity-50">
 							{isLoading ? "Registering..." : "Register"}
 						</button>
 
 						<div className="relative my-6">
 							<div className="absolute inset-0 flex items-center">
-								<div className="w-full border-t border-gray-300" />
+								<div className="w-full border-t border-zinc-700" />
 							</div>
 							<div className="relative flex justify-center text-sm">
-								<span className="px-2 bg-white text-gray-500">Or continue with</span>
+								<span className="px-2 bg-zinc-900 text-zinc-500">Or continue with</span>
 							</div>
 						</div>
 

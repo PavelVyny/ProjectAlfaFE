@@ -62,7 +62,7 @@ export default function EditEventPage({ params }: { params: Promise<{ id: string
     description: event.description,
     category: event.category,
     price: event.price,
-    date: event.date,
+    date: event.date?.split('T')[0] ?? event.date,
     start_time: event.start_time,
     duration_minutes: event.duration_minutes,
     capacity: event.capacity,

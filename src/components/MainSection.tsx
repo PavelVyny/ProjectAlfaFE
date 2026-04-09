@@ -15,7 +15,7 @@ export function MainSection() {
   const filtered = useMemo(() => {
     let list = events;
     if (category !== "All") {
-      list = list.filter((e) => e.category === category);
+      list = list.filter((e) => e.category.toUpperCase() === category.toUpperCase());
     }
     if (search.trim()) {
       const q = search.trim().toLowerCase();
