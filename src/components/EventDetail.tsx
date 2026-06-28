@@ -109,7 +109,7 @@ export function EventDetail({ id }: Props) {
       </div>
 
       <div className="relative z-10 -mt-20 mx-auto flex min-h-0 w-full max-w-xl flex-1 flex-col bg-transparent px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:-mt-28 sm:px-6 md:-mt-32 lg:-mt-48">
-        <div className="min-h-0 flex-1 overflow-hidden lg:overflow-y-auto lg:overscroll-y-contain lg:[-webkit-overflow-scrolling:touch]">
+        <div className="min-h-0 flex-1 overflow-y-auto overscroll-y-contain [-webkit-overflow-scrolling:touch]">
           <div className="flex min-h-full w-full flex-col justify-end">
             <div className="flex w-full flex-col items-start text-left">
               <div className="mb-3 sm:mb-4">
@@ -155,7 +155,12 @@ export function EventDetail({ id }: Props) {
               {/* EventBookingCard — UI компонент бронирования.
                   Сейчас это заглушка (qty + Book Now кнопка без действия).
                   Junior подключит useBookEvent() хук к этой форме. */}
-              <EventBookingCard pricePerSeat={event.price} compact className="!mt-0" />
+              <EventBookingCard 
+                eventId={event.id} // добавил согласно заданию! 
+                pricePerSeat={event.price} 
+                compact 
+                className="!mt-0" 
+              />
             </div>
           </div>
         </div>
