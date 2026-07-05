@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useToast } from "../contexts/ToastContext";
+import type { ApiErr } from "../types/api";
 
 interface ProfileContentProps {
 	className?: string;
@@ -95,19 +96,11 @@ export const ProfileContent: React.FC<ProfileContentProps> = ({ className = "" }
 												showToast("Profile updated successfully", "success");
 											} catch (err: unknown) {
 												console.error("Update profile error:", err);
-												const apiError = err as {
-													response?: {
-														data?: {
-															details?: string;
-															error?: { details?: string };
-															message?: string;
-														};
-													};
-												};
+												const apiError = err as ApiErr;
 												const errorMessage =
-													apiError.response?.data?.details ||
-													apiError.response?.data?.error?.details ||
-													apiError.response?.data?.message ||
+													apiError.response?.data?.details ??
+													apiError.response?.data?.error?.details ??
+													apiError.response?.data?.message ??
 													"Failed to update profile";
 												setError(errorMessage);
 											} finally {

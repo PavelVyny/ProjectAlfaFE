@@ -156,7 +156,7 @@ export function EventDetail({ id }: Props) {
                   Сейчас это заглушка (qty + Book Now кнопка без действия).
                   Junior подключит useBookEvent() хук к этой форме. */}
               <EventBookingCard 
-                eventId={event.id} // добавил согласно заданию! 
+                eventId={event.id}
                 pricePerSeat={event.price} 
                 compact 
                 className="!mt-0" 

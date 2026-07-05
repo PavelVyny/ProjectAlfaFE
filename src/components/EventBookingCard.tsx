@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useBookEvent } from "@/hooks/useBookEvent";
 import { useToast } from "@/contexts/ToastContext";
+import type { ApiErr } from "@/types/api";
 
 interface EventBookingCardProps {
   eventId: string;
@@ -12,18 +13,18 @@ interface EventBookingCardProps {
 }
 
 export function EventBookingCard({ 
-  eventId, // добавил согласно заданию! 
+  eventId, 
   pricePerSeat, 
   className = "", 
   compact 
 }: EventBookingCardProps) {
   const [qty, setQty] = useState(1);
-  const [email, setEmail] = useState(""); // добавил согласно заданию! 
-  const { showToast } = useToast(); // добавил согласно заданию! 
-  const bookEvent = useBookEvent(); // добавил согласно заданию! 
+  const [email, setEmail] = useState(""); 
+  const { showToast } = useToast(); 
+  const bookEvent = useBookEvent(); 
   const total = qty * pricePerSeat;
 
-  const handleBook = () => { // добавил согласно заданию!  
+  const handleBook = () => { 
     if (!email) {
       showToast("Please enter your email", "error");
       return;
@@ -41,10 +42,14 @@ export function EventBookingCard({
           setEmail("");
           setQty(1);
         },
-        onError: (error: any) => {
-          const message = error.response?.data?.message || "Failed to book event";
+        onError: (error) => {
+          const err = error as ApiErr;
+          const message =
+            err.response?.data?.error?.details ??
+            err.response?.data?.error?.message ??
+            "Failed to book event";
           showToast(message, "error");
-        },
+},
       }
     );
   };
