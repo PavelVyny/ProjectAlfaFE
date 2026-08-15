@@ -229,7 +229,7 @@ export const authService = {
     email?: string;
   }): Promise<{ user: AuthResponseDto['user'] }> {
     logAuthEvent(AuthEventType.REGISTER, 'Profile update attempt', data);
-    const response = await authApi.post('/auth/profile', data);
+    const response = await authApi.patch('/auth/profile', data);
     const result = response.data.data || response.data;
     logAuthEvent(AuthEventType.REGISTER, 'Profile update successful', {
       userId: result.user.id,
